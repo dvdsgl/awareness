@@ -1,0 +1,86 @@
+MD		    = '/Applications/MonoDevelop.app'
+MDTOOLS   = File.join MD, "Contents/MacOS"
+MD_PATH   = File.join MDTOOLS, "lib/monodevelop/bin"
+SOLUTION  = File.dirname __FILE__
+PROJECT   = File.join SOLUTION, "Awareness"
+PARENT    = File.dirname SOLUTION
+LOCAL_BIN = File.join PARENT, 'bin'
+IMAGES	  = File.join PARENT, 'etc'
+MONO_PATH = ENV['MONO_PATH']
+
+RELEASE_HOST = "iamfutureproof.com"
+RELEASE_USER = "iamfutureproof"
+RELEASE_PATH = "iamfutureproof.com/downloads"
+RELEASE_VOLUME_NAME = "Awareness"
+
+task :default => :build
+
+desc 'Setup environment for building and packaging'
+task :env do
+	puts '* Setting up environment'
+
+	ENV['PATH'] = [LOCAL_BIN, MDTOOLS, ENV['PATH']].join ':'
+	ENV["MONO_PATH"] = [ MD_PATH, MONO_PATH ].join(":")
+end
+
+desc 'Build the project'
+task :build, [:config] => :env do |t, args|
+	args.with_defaults(:config => "Debug")
+	puts "* Building Awareness (#{args.config})"
+	Dir.chdir(SOLUTION) do
+		sh "mdtool build --project:Awareness --configuration:#{args.config}"
+	end
+end
+
+desc 'Build the application bundle'
+task :bundle, [:config] => :build do |t, args|
+	args.with_defaults(:config => "Debug")
+	puts "* Building bundle (#{args.config})"
+	Dir.chdir(SOLUTION) do
+		sh "mdtool mac-bundle --include-mono --configuration=#{args.config}"
+		`rm -rf #{IMAGES}/Awareness.app`
+		sh %{mv Awareness.app #{IMAGES}}
+	end
+end
+
+desc 'Build release disk image (PayPal configuration)'
+task :image, [:config] => :sign do
+	release_image = get_release_image
+	`rm #{release_image}`
+
+	puts "* Building release image '#{release_image}'"
+
+	`mkdir image`
+	sh "cp -r #{IMAGES}/Awareness.app image"
+	sh "make-diskimage #{release_image} image #{RELEASE_VOLUME_NAME} -null- #{IMAGES}/Awareness.DS_Store"
+	`rm -rf image`
+end
+
+desc 'Builds the release image a publishes it to the live server'
+task :release, [:config] => :image do
+	puts "* Publishing the release image to the live server"
+	sh "rsync -avz #{get_release_image} #{RELEASE_USER}@#{RELEASE_HOST}:#{RELEASE_PATH}"
+end
+
+desc 'Signs the bundle'
+task :sign, [:config] => :bundle do
+	puts "* Signing application bundle"
+	sh %{codesign -v -f -s "3rd Party Mac Developer Application: Futureproof LLC" #{IMAGES}/Awareness.app}
+end
+
+desc 'Create an installer (required for App Store)'
+task :installer, [:config] => :sign do
+	puts '* Creating installer'
+	`rm -rf #{IMAGES}/Awareness.pkg`
+	sh %{productbuild --component #{IMAGES}/Awareness.app /Applications --sign "3rd Party Mac Developer Installer: Futureproof LLC" #{IMAGES}/Awareness.pkg}
+end
+
+def get_release_image
+	File.join IMAGES, "Awareness-#{get_awareness_version}.dmg"
+end
+
+def get_awareness_version
+	plist = File.read(File.join PROJECT, "Info.plist")
+	match = /<key>CFBundleVersion<\/key>\n\t<string>(.+)<\/string>/.match plist
+	match[1]
+end

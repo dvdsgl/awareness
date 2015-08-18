@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ShowInDock</key>
+	<true/>
+	<key>PlayBowlOnStart</key>
+	<true/>
+	<key>BowlVolumePercentage</key>
+	<integer>80</integer>
+	<key>MinBreakSeconds</key>
+	<integer>300</integer>
+	<key>MaxActivitySeconds</key>
+	<integer>3600</integer>
+	<key>StartAtLogin</key>
+	<true/>
+	<key>IsFirstRun</key>
+	<true/>
+	<key>ShowInMenuBar</key>
+	<true/>
+	<key>HasAskedToStartAtLogin</key>
+	<false/>
+</dict>
+</plist>

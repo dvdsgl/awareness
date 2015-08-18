@@ -1,0 +1,40 @@
+MSBUILD = 'C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe'
+MAKENSIS = '"C:\Program Files\NSIS\makensis"'
+SIGNTOOL = '"C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\signtool.exe"'
+CERTIFICATE = File.expand_path '../etc/sign.pfx'
+
+task :default => :build
+
+def sign files
+	files = [files] unless files.kind_of? Enumerable
+	sh "#{SIGNTOOL} sign /f #{CERTIFICATE} /p WalterJ.Ong /t http://timestamp.comodoca.com/authenticode #{files.join ' '}"
+end
+
+desc "Builds the Windows solution"
+task :build do
+	sh MSBUILD
+end
+
+desc "Signs the application"
+task :signbuild => :build do
+	Dir.chdir('Awareness/bin/Release') do
+		sign FileList['*.exe', '*.dll']
+	end
+end
+
+desc "Signs the installer"
+task :signinstaller => :installer do
+	sign '../etc/InstallAwareness.exe'
+end
+
+desc "Creates the Windows installer"
+task :installer => :signbuild do
+	Dir.chdir("../etc") do
+		sh "#{MAKENSIS} InstallAwareness.nsi"
+	end
+end
+
+desc "Releases the installer to the live server"
+task :release => :signinstaller do
+	sh "scp ../etc/InstallAwareness.exe iamfutureproof@iamfutureproof.com:iamfutureproof.com/downloads/"
+end

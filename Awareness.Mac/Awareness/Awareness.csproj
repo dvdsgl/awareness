@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{110B694F-9ED0-48F5-B9B5-9A31C5C42876}</ProjectGuid>
+    <ProjectTypeGuids>{1C533B1C-72DD-4CB1-9F6B-BF11D93BCFBE};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Awareness</RootNamespace>
+    <AssemblyName>Awareness</AssemblyName>
+    <ReleaseVersion>1.1</ReleaseVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="/Developer/usr/bin/xcodebuild" workingdir="${ProjectDir}/../Native" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="/Developer/usr/bin/xcodebuild" workingdir="${ProjectDir}/../Native" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="nunit.framework">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac, Version=0.0.0.0, Culture=neutral" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.cs">
+      <DependentUpon>MainWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindowController.cs">
+      <DependentUpon>MainWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xib.designer.cs">
+      <DependentUpon>MainWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="AppDelegate.cs">
+      <DependentUpon>MainMenu.xib</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu.xib.designer.cs">
+      <DependentUpon>MainMenu.xib</DependentUpon>
+    </Compile>
+    <Compile Include="src\Awareness\Main.cs" />
+    <Compile Include="src\Awareness\AppDelegate.cs" />
+    <Compile Include="src\Awareness\NSApplicationExtensions.cs" />
+    <Compile Include="AboutWindow.cs">
+      <DependentUpon>AboutWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="AboutWindowController.cs">
+      <DependentUpon>AboutWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="AboutWindow.xib.designer.cs">
+      <DependentUpon>AboutWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="src\Awareness\AboutWindowController.cs" />
+    <Compile Include="src\Awareness\LoginItemManager.g.cs" />
+    <Compile Include="src\Awareness\MacPlatform.cs" />
+    <Compile Include="src\Awareness\MacPreferences.cs" />
+    <Compile Include="src\Awareness\Runtime.cs" />
+    <Compile Include="src\Awareness\ActivityMonitor.g.cs" />
+    <Compile Include="src\Awareness\ActivityMonitor.cs" />
+    <Compile Include="src\Awareness\BowlSound.cs" />
+    <Compile Include="src\Awareness\iTunes.cs" />
+    <Compile Include="src\Awareness\NSObjectExtensions.cs" />
+    <Compile Include="PreferencesWindow.cs">
+      <DependentUpon>PreferencesWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesWindowController.cs">
+      <DependentUpon>PreferencesWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesWindow.xib.designer.cs">
+      <DependentUpon>PreferencesWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="src\Awareness\PreferencesWindowController.cs" />
+    <Compile Include="src\Awareness\TimeTextFieldController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xib" />
+    <Page Include="MainMenu.xib" />
+    <Page Include="AboutWindow.xib" />
+    <Page Include="PreferencesWindow.xib" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\Awareness\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Awareness.Agnostic\Awareness.Agnostic.csproj">
+      <Project>{82AD0693-F389-44B2-929B-99334B88F49C}</Project>
+      <Name>Awareness.Agnostic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\cadenza\src\Cadenza\Cadenza.csproj">
+      <Project>{F656F792-2CDE-4E17-BB5F-6A6F1C266CB8}</Project>
+      <Name>Cadenza</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Resources\bowl.wav">
+      <Link>Resources\bowl.wav</Link>
+    </Content>
+    <Content Include="..\..\Resources\iTunesGoQuiet.as">
+      <Link>Resources\iTunesGoQuiet.as</Link>
+    </Content>
+    <Content Include="..\..\Resources\splash.jpg">
+      <Link>Resources\splash.jpg</Link>
+    </Content>
+    <Content Include="..\..\Resources\UserDefaults.plist">
+      <Link>Resources\UserDefaults.plist</Link>
+    </Content>
+    <Content Include="..\Native\build\Release\Native.dylib">
+      <Link>Resources\Native.dylib</Link>
+    </Content>
+    <Content Include="Awareness.icns" />
+  </ItemGroup>
+</Project>

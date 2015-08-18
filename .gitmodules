@@ -1,0 +1,3 @@
+[submodule "cadenza"]
+	path = cadenza
+	url = git@github.com:davidsiegel/cadenza.git

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Awareness</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.futureproof.awareness</string>
+	<key>CFBundleName</key>
+	<string>Awareness</string>
+	<key>CFBundleVersion</key>
+	<string>1.1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.healthcare-fitness</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.6</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>2011 Futureproof LLC</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>
