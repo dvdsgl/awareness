@@ -8,5 +8,5 @@ Awareness displays how long you've been using your computer without a break in t
 To checkout,
 
 ```shell
-$ git clone --recursive git@github.com:futureproof/awareness.git
+$ git clone --recursive git@github.com:dvdsgl/awareness.git
 ```
